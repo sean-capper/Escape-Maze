@@ -1,14 +1,12 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Maze : MonoBehaviour {
 	public GameObject wall;
-
-	// limits the maze's size between 5 and 40, will show as a slider in the Inspector Window
 	[Range(5,40)]
-	public int mazeRows, mazeColumns = 10;
-	public float wallOffset = 6f;
+	public int mazeRows, mazeColumns = 20;
+	public float wallOffset = 2f;
 
 
 	private MazeCell[,] maze;
@@ -34,11 +32,14 @@ public class Maze : MonoBehaviour {
 				maze[r,c] = new MazeCell();
 				maze[r,c].row = r;
 				maze[r,c].col = c;
-
+				maze[r,c].parent = new GameObject();
+				maze[r,c].parent.transform.position = new Vector3(r, 0, c);
+				maze[r,c].parent.name = "Cell " + r + " ," + c;
 
 				maze[r,c].floor = Instantiate(wall, new Vector3(r*wallOffset, -(wallOffset/2f),c*wallOffset), Quaternion.identity);
 				maze[r,c].floor.name = "Floor "+ r + ","+c;
 				maze[r,c].floor.transform.Rotate(Vector3.right, 90f);
+				maze[r,c].floor.transform.parent = maze[r,c].parent.transform;
 				
 				// make the floor black for now
 				maze[r,c].floor.GetComponent<Renderer>().material.color = Color.black;
@@ -48,24 +49,29 @@ public class Maze : MonoBehaviour {
 				if(c == 0) {
 					maze[r,c].westWall = Instantiate(wall, new Vector3(r*wallOffset, 0, (c*wallOffset)-(wallOffset/2f)), Quaternion.identity);
 					maze[r,c].westWall.name = "WestWall " + r + "," + c;
+					maze[r,c].westWall.transform.parent = maze[r,c].parent.transform;
 
 				}
 
 				maze[r,c].eastWall = Instantiate(wall, new Vector3(r*wallOffset, 0, (c*wallOffset)+(wallOffset/2f)), Quaternion.identity);
 				maze[r,c].eastWall.name = "EastWall " + r + "," + c;
+				maze[r,c].eastWall.transform.parent = maze[r,c].parent.transform;
 
 				// only spawns a north wall if its the first row
 				if(r == 0) {
 					maze[r,c].northWall = Instantiate(wall, new Vector3((r*wallOffset)-(wallOffset/2f), 0, c*wallOffset), Quaternion.identity);
 					maze[r,c].northWall.name = "NorthWall " + r + "," + c;
 					maze[r,c].northWall.transform.Rotate(Vector3.up * 90f);
+					maze[r,c].northWall.transform.parent = maze[r,c].parent.transform;
 
 				}
 
 				maze[r,c].southWall = Instantiate(wall, new Vector3((r*wallOffset)+(wallOffset/2f), 0, c*wallOffset), Quaternion.identity);
 				maze[r,c].southWall.name = "SouthWall " + r + "," + c;
 				maze[r,c].southWall.transform.Rotate(Vector3.up * 90f);
+				maze[r,c].southWall.transform.parent = maze[r,c].parent.transform;
 
+				maze[r,c].parent.transform.parent = transform;
 			}
 		}
 	}

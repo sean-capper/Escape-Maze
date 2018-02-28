@@ -7,11 +7,7 @@ public class Maze : MonoBehaviour {
 	[Range(5,40)]
 	public int mazeRows, mazeColumns = 20;
 	public float wallOffset = 2f;
-<<<<<<< HEAD
-	public Material wallMat;
-=======
->>>>>>> 404c444c8872d363f2aef7a76a9fade69d03e587
-
+	public Material floorMat;
 
 	private MazeCell[,] maze;
 	private MazeCell startingCell;
@@ -31,6 +27,17 @@ public class Maze : MonoBehaviour {
 	 */
 	void InitMaze() {
 		maze = new MazeCell[mazeRows, mazeColumns];
+		GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
+		floor.transform.localScale = new Vector3(mazeRows, 1, mazeColumns);
+
+		float x = ((mazeRows - 1f) / 2f) * wallOffset;
+		float z = ((mazeColumns - 1f) / 2f) * wallOffset;
+
+		floor.transform.position = new Vector3(x, -1, z);
+		floor.transform.parent = transform;
+		
+		floor.GetComponent<Renderer>().material = floorMat;
+
 		for(int r = 0; r < mazeRows; r++) {
 			for(int c = 0; c < mazeColumns; c++) {
 				maze[r,c] = new MazeCell();
@@ -40,17 +47,14 @@ public class Maze : MonoBehaviour {
 				maze[r,c].parent.transform.position = new Vector3(r, 0, c);
 				maze[r,c].parent.name = "Cell " + r + " ," + c;
 
-				maze[r,c].floor = Instantiate(wall, new Vector3(r*wallOffset, -(wallOffset/2f),c*wallOffset), Quaternion.identity);
-				maze[r,c].floor.name = "Floor "+ r + ","+c;
-				maze[r,c].floor.transform.Rotate(Vector3.right, 90f);
-				maze[r,c].floor.transform.parent = maze[r,c].parent.transform;
-<<<<<<< HEAD
-				maze[r,c].floor.GetComponent<Renderer>().material = wallMat;
-=======
+				// maze[r,c].floor = Instantiate(wall, new Vector3(r*wallOffset, -(wallOffset/2f),c*wallOffset), Quaternion.identity);
+				// maze[r,c].floor.name = "Floor "+ r + ","+c;
+				// maze[r,c].floor.transform.Rotate(Vector3.right, 90f);
+				// maze[r,c].floor.transform.parent = maze[r,c].parent.transform;
+				// maze[r,c].floor.GetComponent<Renderer>().material = wallMat;
 				
-				// make the floor black for now
-				maze[r,c].floor.GetComponent<Renderer>().material.color = Color.black;
->>>>>>> 404c444c8872d363f2aef7a76a9fade69d03e587
+				// // make the floor black for now
+				// maze[r,c].floor.GetComponent<Renderer>().material.color = Color.black;
 
 
 				// only spawns a west wall if its the first column
@@ -58,30 +62,17 @@ public class Maze : MonoBehaviour {
 					maze[r,c].westWall = Instantiate(wall, new Vector3(r*wallOffset, 0, (c*wallOffset)-(wallOffset/2f)), Quaternion.identity);
 					maze[r,c].westWall.name = "WestWall " + r + "," + c;
 					maze[r,c].westWall.transform.parent = maze[r,c].parent.transform;
-<<<<<<< HEAD
-=======
-
->>>>>>> 404c444c8872d363f2aef7a76a9fade69d03e587
 				}
 
 				maze[r,c].eastWall = Instantiate(wall, new Vector3(r*wallOffset, 0, (c*wallOffset)+(wallOffset/2f)), Quaternion.identity);
 				maze[r,c].eastWall.name = "EastWall " + r + "," + c;
 				maze[r,c].eastWall.transform.parent = maze[r,c].parent.transform;
-<<<<<<< HEAD
-					
-=======
-
->>>>>>> 404c444c8872d363f2aef7a76a9fade69d03e587
 				// only spawns a north wall if its the first row
 				if(r == 0) {
 					maze[r,c].northWall = Instantiate(wall, new Vector3((r*wallOffset)-(wallOffset/2f), 0, c*wallOffset), Quaternion.identity);
 					maze[r,c].northWall.name = "NorthWall " + r + "," + c;
 					maze[r,c].northWall.transform.Rotate(Vector3.up * 90f);
 					maze[r,c].northWall.transform.parent = maze[r,c].parent.transform;
-<<<<<<< HEAD
-=======
-
->>>>>>> 404c444c8872d363f2aef7a76a9fade69d03e587
 				}
 
 				maze[r,c].southWall = Instantiate(wall, new Vector3((r*wallOffset)+(wallOffset/2f), 0, c*wallOffset), Quaternion.identity);

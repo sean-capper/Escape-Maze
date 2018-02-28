@@ -223,9 +223,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wall: {fileID: 1661120814152536, guid: 529bcfadcec9046558ef0828e3afba61, type: 2}
   mazeRows: 10
-  mazeColumns: 10
-  wallOffset: 6
-  wallMat: {fileID: 2100000, guid: 5f7ad0f901e9c4534831fbdb11281c17, type: 2}
+  mazeColumns: 20
+  wallOffset: 10
+  floorMat: {fileID: 2100000, guid: 5f7ad0f901e9c4534831fbdb11281c17, type: 2}
 --- !u!4 &969865258
 Transform:
   m_ObjectHideFlags: 0

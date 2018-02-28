@@ -5,5 +5,5 @@ using UnityEngine;
 public class MazeCell {
 	public int row, col;
 	public bool visited = false;
-	public GameObject northWall, southWall, eastWall, westWall, floor;
+	public GameObject parent, northWall, southWall, eastWall, westWall, floor;
 }

@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 969865258}
   - component: {fileID: 969865257}
   m_Layer: 0
-  m_Name: _MazeGenerator
+  m_Name: _Maze
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -225,6 +225,7 @@ MonoBehaviour:
   mazeRows: 10
   mazeColumns: 10
   wallOffset: 6
+  wallMat: {fileID: 2100000, guid: 5f7ad0f901e9c4534831fbdb11281c17, type: 2}
 --- !u!4 &969865258
 Transform:
   m_ObjectHideFlags: 0

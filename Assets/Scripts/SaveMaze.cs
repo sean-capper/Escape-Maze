@@ -10,7 +10,7 @@ public class SaveMaze : Editor {
 		Maze save = (Maze)target;
 		if(GUILayout.Button("Save Maze")) {
 			GameObject temp = GameObject.Find("_Maze");
-			Destroy(temp.GetComponent<Maze>());
+			Destroy(this);
 			PrefabUtility.CreatePrefab("Assets/Prefabs/Mazes/maze_"+Random.Range(0,100)+".prefab", temp);
 		}
 	}

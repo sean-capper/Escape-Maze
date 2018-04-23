@@ -47,7 +47,7 @@ public class Maze : MonoBehaviour {
 				maze[r,c].row = r;
 				maze[r,c].col = c;
 				maze[r,c].parent = new GameObject();
-				maze[r,c].parent.transform.position = new Vector3(r, 0, c);
+				maze[r,c].parent.transform.position = new Vector3(r * wallOffset, 0, c * wallOffset);
 				maze[r,c].parent.name = "Cell " + r + " ," + c;
 
 				// only spawns a west wall if its the first column
@@ -162,5 +162,11 @@ public class Maze : MonoBehaviour {
 			neighbors.Add(grid[r, c - 1]);
 		}
 		return neighbors;
+	}
+
+	public Transform GetRandomCell() {
+		int x = Random.Range(0, mazeRows);
+		int y = Random.Range(0, mazeColumns);
+		return maze[x,y].parent.transform;
 	}
 }

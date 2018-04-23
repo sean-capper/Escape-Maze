@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Maze : MonoBehaviour {
 	public GameObject wall;
 	[Range(5,40)]
 	public int mazeRows, mazeColumns = 20;
-	public float wallOffset = 2f;
+	public Material floorMat;
 
-
+	private float wallOffset = 2f;
 	private MazeCell[,] maze;
 	private MazeCell startingCell;
 	private Stack<MazeCell> visitedCells;
 
 	void Start() {
+		wallOffset = wall.transform.localScale.x;
 		InitMaze();
 		visitedCells = new Stack<MazeCell>();
 		startingCell = maze[Random.Range(0,mazeRows), Random.Range(0, mazeColumns)];
@@ -27,30 +29,32 @@ public class Maze : MonoBehaviour {
 	 */
 	void InitMaze() {
 		maze = new MazeCell[mazeRows, mazeColumns];
+		GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
+		floor.transform.localScale = new Vector3(mazeRows, 1, mazeColumns);
+
+		float x = ((mazeRows - 1f) / 2f) * wallOffset;
+		float z = ((mazeColumns - 1f) / 2f) * wallOffset;
+
+		floor.transform.position = new Vector3(x, -1, z);
+		floor.transform.parent = transform;
+		floor.AddComponent<NavMeshSurface>();
+		floor.GetComponent<Renderer>().material = floorMat;
+		floor.name = "Floor";
+
 		for(int r = 0; r < mazeRows; r++) {
 			for(int c = 0; c < mazeColumns; c++) {
 				maze[r,c] = new MazeCell();
 				maze[r,c].row = r;
 				maze[r,c].col = c;
 				maze[r,c].parent = new GameObject();
-				maze[r,c].parent.transform.position = new Vector3(r, 0, c);
+				maze[r,c].parent.transform.position = new Vector3(r * wallOffset, 0, c * wallOffset);
 				maze[r,c].parent.name = "Cell " + r + " ," + c;
-
-				maze[r,c].floor = Instantiate(wall, new Vector3(r*wallOffset, -(wallOffset/2f),c*wallOffset), Quaternion.identity);
-				maze[r,c].floor.name = "Floor "+ r + ","+c;
-				maze[r,c].floor.transform.Rotate(Vector3.right, 90f);
-				maze[r,c].floor.transform.parent = maze[r,c].parent.transform;
-				
-				// make the floor black for now
-				maze[r,c].floor.GetComponent<Renderer>().material.color = Color.black;
-
 
 				// only spawns a west wall if its the first column
 				if(c == 0) {
 					maze[r,c].westWall = Instantiate(wall, new Vector3(r*wallOffset, 0, (c*wallOffset)-(wallOffset/2f)), Quaternion.identity);
 					maze[r,c].westWall.name = "WestWall " + r + "," + c;
 					maze[r,c].westWall.transform.parent = maze[r,c].parent.transform;
-
 				}
 
 				maze[r,c].eastWall = Instantiate(wall, new Vector3(r*wallOffset, 0, (c*wallOffset)+(wallOffset/2f)), Quaternion.identity);
@@ -63,7 +67,6 @@ public class Maze : MonoBehaviour {
 					maze[r,c].northWall.name = "NorthWall " + r + "," + c;
 					maze[r,c].northWall.transform.Rotate(Vector3.up * 90f);
 					maze[r,c].northWall.transform.parent = maze[r,c].parent.transform;
-
 				}
 
 				maze[r,c].southWall = Instantiate(wall, new Vector3((r*wallOffset)+(wallOffset/2f), 0, c*wallOffset), Quaternion.identity);
@@ -110,7 +113,6 @@ public class Maze : MonoBehaviour {
 					DestroyWall(currentCell, nextCell);
 					Carve(nextCell, grid);
 				}
-				
 			}
 		
 	}
@@ -160,5 +162,11 @@ public class Maze : MonoBehaviour {
 			neighbors.Add(grid[r, c - 1]);
 		}
 		return neighbors;
+	}
+
+	public Transform GetRandomCell() {
+		int x = Random.Range(0, mazeRows);
+		int y = Random.Range(0, mazeColumns);
+		return maze[x,y].parent.transform;
 	}
 }

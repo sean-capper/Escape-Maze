@@ -28,3 +28,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 .DS_Store
+<<<<<<< HEAD
+.vscode
+=======
+>>>>>>> 404c444c8872d363f2aef7a76a9fade69d03e587

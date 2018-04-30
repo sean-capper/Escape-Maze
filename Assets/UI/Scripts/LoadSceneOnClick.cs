@@ -4,9 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class LoadSceneOnClick : MonoBehaviour
 {
+	private void Start() {
+		Cursor.lockState = CursorLockMode.Locked;
+	}
 
-    public void LoadByIndex(int sceneIndex)
+	public void LoadGame()
     {
-        SceneManager.LoadScene(sceneIndex);
+        SceneManager.LoadScene(1);
     }
 }

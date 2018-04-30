@@ -8,6 +8,7 @@ public class Maze : MonoBehaviour {
 	[Range(5,40)]
 	public int mazeRows, mazeColumns = 20;
 	public Material floorMat;
+	public GameObject EndPoint;
 
 	private float wallOffset = 2f;
 	private MazeCell[,] maze;
@@ -40,7 +41,7 @@ public class Maze : MonoBehaviour {
 		floor.AddComponent<NavMeshSurface>();
 		floor.GetComponent<Renderer>().material = floorMat;
 		floor.name = "Floor";
-
+		
 		for(int r = 0; r < mazeRows; r++) {
 			for(int c = 0; c < mazeColumns; c++) {
 				maze[r,c] = new MazeCell();

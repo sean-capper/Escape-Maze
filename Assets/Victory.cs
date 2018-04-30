@@ -12,13 +12,14 @@ public class Victory : MonoBehaviour {
 
 	private void Start() {
 		group =	victoryScreen.GetComponent<CanvasGroup>();
+		Cursor.lockState = CursorLockMode.Locked;
 	}
 
 	private void Update() {
 		if(escaped) {
 			FadeInUI();
 			if(Input.GetKey(KeyCode.Space)) {
-				Application.Quit();
+				SceneManager.LoadScene(0);
 			}
 		}
 	}

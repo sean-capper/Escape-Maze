@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour {
 
+	public bool testing;
+
 	[SerializeField] private float FieldOfView;
 	[SerializeField] private float SightDistance;
 	private NavMeshAgent agent;
@@ -20,8 +22,11 @@ public class EnemyMovement : MonoBehaviour {
 	}
 
 
-	void Update ()
+	void FixedUpdate ()
     {
+		if(testing)
+			Debug.Log("Wandering: " + wandering + "\n" +
+				  "targetPos: " + targetPos + "\n");
 		if(player == null) {
 			player = GameObject.FindWithTag("Player").transform;
 			maze = GameObject.Find("_Maze").GetComponent<Maze>();
@@ -34,7 +39,7 @@ public class EnemyMovement : MonoBehaviour {
 			wandering = false;
 		}
 		else if (wandering) {
-			if((transform.position.z == targetPos.position.z) && (transform.position.z == targetPos.position.z)) {
+			if((transform.position.x == targetPos.position.x) && (transform.position.z == targetPos.position.z)) {
 				wandering = false;
 			}
 		}
@@ -53,7 +58,6 @@ public class EnemyMovement : MonoBehaviour {
         Vector3 direciton = player.position - transform.position;
 
         if ((Vector3.Angle(direciton, transform.forward) <= FieldOfView * 0.5f)) {
-			// Debug.DrawRay(transform.position, direciton, Color.red, 2f);
             if (Physics.Raycast(transform.position, direciton, out hit, SightDistance))
             {
                 return (hit.transform.CompareTag("Player"));

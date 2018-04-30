@@ -92,28 +92,27 @@ public class Maze : MonoBehaviour {
  		
 	 */
 	void Carve(MazeCell currentCell, MazeCell[,] grid) {
-
-			// all cells have been visited, end the method
-			if(visitedCells.Count == 0)
-				return;
-			else {		
-				grid[currentCell.row, currentCell.col].visited = true;
-				// gets a list of valid neighbors
-				List<MazeCell> neighbors = GetNeighbors(currentCell, grid);
-				// if there are no valid neighbors, call Carve using the last visited cell
-				if(neighbors.Count == 0) {
-					Carve(visitedCells.Pop(), grid);
-				} 
-				// else pick a random neighbor, push it to the stack, and carve a passage
-				// then call Carve(...) on the nextCell
-				else {
-					MazeCell nextCell = neighbors[Random.Range(0, neighbors.Count)];
-					visitedCells.Push(nextCell);
-					// destory the connecting wall
-					DestroyWall(currentCell, nextCell);
-					Carve(nextCell, grid);
-				}
+		// all cells have been visited, end the method
+		if (visitedCells.Count == 0)
+			return;
+		else {
+			grid[currentCell.row, currentCell.col].visited = true;
+			// gets a list of valid neighbors
+			List<MazeCell> neighbors = GetNeighbors(currentCell, grid);
+			// if there are no valid neighbors, call Carve using the last visited cell
+			if (neighbors.Count == 0) {
+				Carve(visitedCells.Pop(), grid);
 			}
+			// else pick a random neighbor, push it to the stack, and carve a passage
+			// then call Carve(...) on the nextCell
+			else {
+				MazeCell nextCell = neighbors[Random.Range(0, neighbors.Count)];
+				visitedCells.Push(nextCell);
+				// destory the connecting wall
+				DestroyWall(currentCell, nextCell);
+				Carve(nextCell, grid);
+			}
+		}
 		
 	}
 
@@ -134,13 +133,15 @@ public class Maze : MonoBehaviour {
 			Destroy(currentCell.eastWall);
 			return;
 		}
-		if(currentCell.row > nextCell.row && nextCell.southWall != null) { // moving north
+		if (currentCell.row > nextCell.row && nextCell.southWall != null) { // moving north
 			Destroy(nextCell.southWall);
 			return;
+
 		}
-		if(currentCell.col > nextCell.col && nextCell.eastWall != null) { // moving west
+		if (currentCell.col > nextCell.col && nextCell.eastWall != null) { // moving west
 			Destroy(nextCell.eastWall);
 			return;
+
 		}
 	}
 
